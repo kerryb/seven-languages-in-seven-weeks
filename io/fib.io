@@ -4,12 +4,17 @@ fib := method(n,
   last := 0
   current := 1
   for(a, 1, n,
-    current println
     next := current + last
     last = current
     current = next
   )
-  current
+  last
 )
 
-fib(10) println
+for(n, 1, 10, fib(n) println)
+
+fib = method(n, 
+  if(n <= 2, 1, fib(n - 1) + fib(n - 2))
+)
+
+for(n, 1, 10, fib(n) println)
