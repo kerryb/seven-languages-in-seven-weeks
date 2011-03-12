@@ -11,6 +11,14 @@ Matrix set := method(x, y, value,
 )
 Matrix get := method(x, y, values at(y) at(x))
 Matrix asString := method(values map(join(", ")) join("\n"))
+Matrix transpose := method(
+  transposed_matrix := Matrix dim(values first size, values size)
+  values foreach(y, row,
+    row foreach(x, v, transposed_matrix set(y, x, v))
+  )
+  transposed_matrix
+)
+
 
 matrix := Matrix dim(3, 3)
 matrix set(0, 0, "NW")
@@ -34,5 +42,9 @@ matrix get(0, 0) println
 "" println
 matrix println
 
-"" println
+"Transposed:\n" println
+matrix transpose println
+
+
+"Another matrix:\n" println
 another_matrix println
