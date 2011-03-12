@@ -19,13 +19,11 @@ Matrix transpose := method(
   transposed_matrix
 )
 
-
 matrix := Matrix dim(3, 3)
 matrix set(0, 0, "NW")
 matrix set(1, 0, "N")
 matrix set(2, 0, "NE")
 matrix set(0, 1, "W")
-matrix set(1, 1, "C")
 matrix set(2, 1, "E")
 matrix set(0, 2, "SW")
 matrix set(1, 2, "S")
@@ -37,14 +35,24 @@ another_matrix set(1, 0, 2)
 another_matrix set(0, 1, 3)
 another_matrix set(0, 1, 4)
 
-"Element at 0, 0 is: " print
-matrix get(0, 0) println
-"" println
+"Matrix:\n" println
 matrix println
 
-"Transposed:\n" println
+"\nElement at 0, 0 is: " print
+matrix get(0, 0) println
+"\nElement at 2, 1 is: " print
+matrix get(2, 1) println
+
+"\nTransposed:\n" println
 matrix transpose println
 
-
-"Another matrix:\n" println
+"\nAnother matrix:\n" println
 another_matrix println
+
+"\nWriting to file serialized_matrix.data..." println
+File with("serialized_matrix.data") open write(matrix serialized) close
+"Loading new matrix from file..." println
+loaded_matrix := doFile("serialized_matrix.data")
+"Loaded:\n" println
+loaded_matrix println
+"" println
