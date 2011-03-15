@@ -6,11 +6,10 @@ Builder forward := method(
   xml := "\n" asMutable appendSeq(" " repeated(indent))
   indent = indent + 2
   xml appendSeq("<", call message name, ">")
-  call message arguments foreach(arg,
-    xml appendSeq(self doMessage(arg))
-  )
+  xml appendSeq(call message arguments map(arg, doMessage(arg)) join)
   indent = indent - 2
-  xml appendSeq("</", call message name, ">\n")
+  if(xml endsWithSeq(">"), xml appendSeq("\n", " " repeated(indent)))
+  xml appendSeq("</", call message name, ">")
 )
 Builder ul(
   li("Io"),
