@@ -1,16 +1,25 @@
 #!/usr/bin/env io
 
 Builder := Object clone
+Builder indent := 0
 Builder forward := method(
-  xml := "\n<#{call message name}>" interpolate asMutable
+  xml := "\n" asMutable appendSeq(" " repeated(indent))
+  indent = indent + 2
+  xml appendSeq("<", call message name, ">")
   call message arguments foreach(arg,
-    content := self doMessage(arg)
-    if(content type == "Sequence", xml appendSeq(content))
+    xml appendSeq(self doMessage(arg))
   )
-  xml appendSeq("</", call message name, ">")
+  indent = indent - 2
+  xml appendSeq("</", call message name, ">\n")
 )
 Builder ul(
   li("Io"),
   li("Lua"),
-  li("JavaScript")
+  li("JavaScript"),
+  li("Ruby"),
+  ul(
+    li("MRI"),
+    li("jRuby"),
+    li("Rubinius")
+  )
 ) println
