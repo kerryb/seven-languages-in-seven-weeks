@@ -2,15 +2,15 @@
 
 Builder := Object clone
 Builder forward := method(
-  writeln("<", call message name, ">")
+  xml := "<#{call message name}>" interpolate asMutable
   call message arguments foreach(arg,
     content := self doMessage(arg)
-    if(content type == "Sequence", writeln(content))
+    if(content type == "Sequence", xml appendSeq(content))
   )
-  writeln("</", call message name, ">")
+  xml appendSeq("</", call message name, ">")
 )
 Builder ul(
   li("Io"),
   li("Lua"),
   li("JavaScript")
-)
+) println
