@@ -2,7 +2,7 @@
 
 Builder := Object clone
 Builder forward := method(
-  xml := "<#{call message name}>" interpolate asMutable
+  xml := "\n<#{call message name}>" interpolate asMutable
   call message arguments foreach(arg,
     content := self doMessage(arg)
     if(content type == "Sequence", xml appendSeq(content))
