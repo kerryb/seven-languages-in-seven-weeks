@@ -27,17 +27,17 @@ sudoku(Puzzle, Solution) :-
          Col1, Col2, Col3, Col4,
          Square1, Square2, Square3, Square4]).
 
-write_grid([]) :-
+write_grid([], _) :-
   writeln('└───┴───┘').
-write_grid(List) :-
+write_grid(List, Size) :-
   append(SetOfRows, Tail, List),
   append(Row1, Row2, SetOfRows),
-  length(Row1, 4),
-  length(Row2, 4),
+  length(Row1, Size),
+  length(Row2, Size),
   write_row_separator(List),
   write_row(Row1),
   write_row(Row2),
-  write_grid(Tail).
+  write_grid(Tail, Size).
 
 write_row(Row) :-
   [A, B, C, D] = Row,
@@ -53,4 +53,4 @@ test :-
           _, _, _, _,
           3, 4, _, _],
           Solution),
-  write_grid(Solution).
+  write_grid(Solution, 4).
