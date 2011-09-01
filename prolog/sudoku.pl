@@ -27,25 +27,46 @@ sudoku(Puzzle, Solution) :-
          Col1, Col2, Col3, Col4,
          Square1, Square2, Square3, Square4]).
 
+square_width_for_size(4, 2).
+square_height_for_size(4, 2).
+
 write_grid([], _) :-
   writeln('└───┴───┘').
 write_grid(List, Size) :-
-  append(SetOfRows, Tail, List),
-  append(Row1, Row2, SetOfRows),
-  length(Row1, Size),
-  length(Row2, Size),
-  write_row_separator(List),
-  write_row(Row1),
-  write_row(Row2),
+  append(Row, Tail, List),
+  length(Row, Size),
+  length(List, CellsRemaining),
+  write_row_separator(CellsRemaining, Size),
+  write_row(Row),
   write_grid(Tail, Size).
 
 write_row(Row) :-
-  [A, B, C, D] = Row,
-  write('│'), write(A), write(' '), write(B), write('│'),
-  write(C), write(' '), write(D),  writeln('│').
+  length(Row, Length),
+  square_width_for_size(Length, SquareWidth),
+  write('│'),
+  write_square_rows(Row, SquareWidth),
+  writeln('').
 
-write_row_separator(RemainingCells) :-
-  length(RemainingCells, 16), writeln('┌───┬───┐') ; writeln('├───┼───┤').
+write_square_rows([], _).
+write_square_rows(Row, SquareWidth) :-
+  append(SquareRow, Tail, Row),
+  length(SquareRow, SquareWidth),
+  write_square_row(SquareRow),
+  write_square_rows(Tail, SquareWidth).
+
+write_square_row([Cell|[]]) :-
+  write(Cell), write('│').
+write_square_row([Cell, Next|Tail]) :-
+  write(Cell), write(' '),
+  write_square_row([Next|Tail]).
+
+write_row_separator(CellsRemaining, Size) :-
+  CellsRemaining =:= Size ** 2,
+  writeln('┌───┬───┐').
+write_row_separator(CellsRemaining, Size) :-
+  CellsRemaining < Size ** 2,
+  square_height_for_size(Size, SquareHeight),
+  CellsRemaining mod (SquareHeight * Size) =:= 0, writeln('├───┼───┤'); true.
 
 test :-
   sudoku([_, _, 2, 3,
