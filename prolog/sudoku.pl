@@ -5,25 +5,26 @@ valid([Head|Tail]) :-
   all_different(Head),
   valid(Tail).
 sudoku(Puzzle, Solution) :-
+  puzzleSize(Puzzle, Size),
   Solution = Puzzle,
   Puzzle = [S11, S12, S13, S14,
             S21, S22, S23, S24,
             S31, S32, S33, S34,
             S41, S42, S43, S44],
-  Solution ins 1..4,
-  Rows = [[S11, S12, S13, S14],
-          [S21, S22, S23, S24],
-          [S31, S32, S33, S34],
-          [S41, S42, S43, S44]],
-  Columns = [[S11, S21, S31, S41],
-             [S12, S22, S32, S42],
-             [S13, S23, S33, S43],
-             [S14, S24, S34, S44]],
+  Solution ins 1..Size,
+  getRows(Puzzle, Size, Rows),
+  transpose(Rows, Columns),
   Squares = [[S11, S12, S21, S22],
              [S13, S14, S23, S24],
              [S31, S32, S41, S42],
              [S33, S34, S43, S44]],
   valid(Rows), valid(Columns), valid(Squares).
+
+getRows([], _, []).
+getRows(Puzzle, Size, [Row|Rows]) :-
+  append(Row, Tail, Puzzle),
+  length(Row, Size),
+  getRows(Tail, Size, Rows).
 
 square_width_for_size(4, 2).
 square_height_for_size(4, 2).
