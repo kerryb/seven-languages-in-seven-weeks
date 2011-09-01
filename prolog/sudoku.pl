@@ -28,6 +28,13 @@ sudoku(Puzzle, Solution) :-
 square_width_for_size(4, 2).
 square_height_for_size(4, 2).
 
+puzzleSize(Puzzle, Size) :-
+  length(Puzzle, Length),
+  Size is round(sqrt(Length)).
+
+write_grid(List) :-
+  puzzleSize(List, Size),
+  write_grid(List, Size).
 write_grid([], _) :-
   writeln('└───┴───┘').
 write_grid(List, Size) :-
@@ -72,4 +79,4 @@ test :-
           _, _, _, _,
           3, 4, _, _],
           Solution),
-  write_grid(Solution, 4).
+  write_grid(Solution).
