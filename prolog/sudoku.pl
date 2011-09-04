@@ -7,17 +7,10 @@ valid([Head|Tail]) :-
 sudoku(Puzzle, Solution) :-
   puzzleSize(Puzzle, Size),
   Solution = Puzzle,
-  Puzzle = [S11, S12, S13, S14,
-            S21, S22, S23, S24,
-            S31, S32, S33, S34,
-            S41, S42, S43, S44],
   Solution ins 1..Size,
   getRows(Puzzle, Size, Rows),
   transpose(Rows, Columns),
-  Squares = [[S11, S12, S21, S22],
-             [S13, S14, S23, S24],
-             [S31, S32, S41, S42],
-             [S33, S34, S43, S44]],
+  getSquares(Rows, Size, Squares),
   valid(Rows), valid(Columns), valid(Squares).
 
 getRows([], _, []).
@@ -25,6 +18,24 @@ getRows(Puzzle, Size, [Row|Rows]) :-
   append(Row, Tail, Puzzle),
   length(Row, Size),
   getRows(Tail, Size, Rows).
+
+getSquares([], _, []).
+getSquares(Rows, Size, Squares) :-
+  append(SquareRows, Tail, Rows),
+  square_height_for_size(Size, SquareHeight),
+  length(SquareRows, SquareHeight),
+  transpose(SquareRows, ColumnsInRowOfSquares),
+  getRowOfSquares(ColumnsInRowOfSquares, Size, RowOfSquares),
+  append(RowOfSquares, NewSquares, Squares),
+  getSquares(Tail, Size, NewSquares).
+
+getRowOfSquares([], _, []).
+getRowOfSquares(Columns, Size, [Square|Squares]) :-
+  append(ColumnsInSquare, Tail, Columns),
+  square_width_for_size(Size, SquareWidth),
+  length(ColumnsInSquare, SquareWidth),
+  append(ColumnsInSquare, Square),
+  getRowOfSquares(Tail, Size, Squares).
 
 square_width_for_size(4, 2).
 square_height_for_size(4, 2).
