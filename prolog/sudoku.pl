@@ -38,7 +38,10 @@ getRowOfSquares(Columns, Size, [Square|Squares]) :-
   getRowOfSquares(Tail, Size, Squares).
 
 square_width_for_size(4, 2).
+square_width_for_size(6, 3).
+
 square_height_for_size(4, 2).
+square_height_for_size(6, 2).
 
 puzzleSize(Puzzle, Size) :-
   length(Puzzle, Length),
@@ -86,9 +89,22 @@ write_row_separator(CellsRemaining, Size) :-
   CellsRemaining mod (SquareHeight * Size) =:= 0, writeln('├───┼───┤'); true.
 
 test :-
+  test_4x4, test_6x6.
+
+test_4x4 :-
   sudoku([_, _, 2, 3,
           _, _, _, _,
           _, _, _, _,
           3, 4, _, _],
+          Solution),
+  write_grid(Solution).
+
+test_6x6 :-
+  sudoku([3, _, _, _, _, 4,
+          _, _, 4, 3, _, _,
+          _, 3, _, _, 6, _,
+          _, 4, _, _, 1, _,
+          _, _, 2, 1, _, _,
+          1, _, _, _, _, 2],
           Solution),
   write_grid(Solution).
