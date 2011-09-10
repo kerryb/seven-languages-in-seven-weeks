@@ -1,3 +1,5 @@
+?- [library(clpfd)].
+
 valid_queen((Row, Col)) :- member(Col, [1,2,3,4,5,6,7,8]).
 
 valid_board([]).
@@ -25,6 +27,6 @@ eight_queens(Board) :-
   diags1(Board, Diags1),
   diags2(Board, Diags2),
 
-  fd_all_different(Cols),
-  fd_all_different(Diags1),
-  fd_all_different(Diags2).
+  all_different(Cols),
+  all_different(Diags1),
+  all_different(Diags2).
