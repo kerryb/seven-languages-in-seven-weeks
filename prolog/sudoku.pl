@@ -88,16 +88,18 @@ write_appropriate_row_separator(CellsRemaining, Size) :-
   square_height_for_size(Size, SquareHeight),
   CellsRemaining mod (SquareHeight * Size) =:= 0, write_row_separator('├', '┼', '┤', Size); true.
 
-write_row_separator(LeftChar, MiddleChar, RightChar, CharsRemaining) :-
+write_row_separator(LeftChar, MiddleChar, RightChar, Size) :-
   write(LeftChar),
-  write('─'),
-  write('─'),
-  write('─'),
-  write(MiddleChar),
-  write('─'),
-  write('─'),
+  write_row_separator(LeftChar, MiddleChar, RightChar, Size, Size).
+
+write_row_separator(_, _, RightChar, 1, _) :-
   write('─'),
   writeln(RightChar).
+write_row_separator(LeftChar, MiddleChar, RightChar, CellsRemaining, Size) :-
+  CellsRemaining > 0,
+  write('──'),
+  NewCellsRemaining is CellsRemaining - 1,
+  write_row_separator(LeftChar, MiddleChar, RightChar, NewCellsRemaining, Size).
 
 test :-
   test_4x4, test_6x6.
