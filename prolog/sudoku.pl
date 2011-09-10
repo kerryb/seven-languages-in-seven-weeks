@@ -50,13 +50,13 @@ puzzleSize(Puzzle, Size) :-
 write_grid(List) :-
   puzzleSize(List, Size),
   write_grid(List, Size).
-write_grid([], _) :-
-  writeln('└───┴───┘').
+write_grid([], Size) :-
+  write_row_separator('└', '┴', '┘', Size).
 write_grid(List, Size) :-
   append(Row, Tail, List),
   length(Row, Size),
   length(List, CellsRemaining),
-  write_row_separator(CellsRemaining, Size),
+  write_appropriate_row_separator(CellsRemaining, Size),
   write_row(Row),
   write_grid(Tail, Size).
 
@@ -80,13 +80,24 @@ write_square_row([Cell, Next|Tail]) :-
   write(Cell), write(' '),
   write_square_row([Next|Tail]).
 
-write_row_separator(CellsRemaining, Size) :-
+write_appropriate_row_separator(CellsRemaining, Size) :-
   CellsRemaining =:= Size ** 2,
-  writeln('┌───┬───┐').
-write_row_separator(CellsRemaining, Size) :-
+  write_row_separator('┌', '┬', '┐', Size).
+write_appropriate_row_separator(CellsRemaining, Size) :-
   CellsRemaining < Size ** 2,
   square_height_for_size(Size, SquareHeight),
-  CellsRemaining mod (SquareHeight * Size) =:= 0, writeln('├───┼───┤'); true.
+  CellsRemaining mod (SquareHeight * Size) =:= 0, write_row_separator('├', '┼', '┤', Size); true.
+
+write_row_separator(LeftChar, MiddleChar, RightChar, CharsRemaining) :-
+  write(LeftChar),
+  write('─'),
+  write('─'),
+  write('─'),
+  write(MiddleChar),
+  write('─'),
+  write('─'),
+  write('─'),
+  writeln(RightChar).
 
 test :-
   test_4x4, test_6x6.
