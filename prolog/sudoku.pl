@@ -1,5 +1,26 @@
 ?- [library(clpfd)].
 
+test :-
+  test_4x4, test_6x6.
+
+test_4x4 :-
+  sudoku([_, _, 2, 3,
+          _, _, _, _,
+          _, _, _, _,
+          3, 4, _, _],
+          Solution),
+  write_grid(Solution).
+
+test_6x6 :-
+  sudoku([3, _, _, _, _, 4,
+          _, _, 4, 3, _, _,
+          _, 3, _, _, 6, _,
+          _, 4, _, _, 1, _,
+          _, _, 2, 1, _, _,
+          1, _, _, _, _, 2],
+          Solution),
+  write_grid(Solution).
+
 valid([]).
 valid([Head|Tail]) :-
   all_different(Head),
@@ -105,24 +126,3 @@ write_row_separator(MiddleChar, CellsRemaining, Size) :-
   write('──'),
   NewCellsRemaining is CellsRemaining - 1,
   write_row_separator(MiddleChar, NewCellsRemaining, Size).
-
-test :-
-  test_4x4, test_6x6.
-
-test_4x4 :-
-  sudoku([_, _, 2, 3,
-          _, _, _, _,
-          _, _, _, _,
-          3, 4, _, _],
-          Solution),
-  write_grid(Solution).
-
-test_6x6 :-
-  sudoku([3, _, _, _, _, 4,
-          _, _, 4, 3, _, _,
-          _, 3, _, _, 6, _,
-          _, 4, _, _, 1, _,
-          _, _, 2, 1, _, _,
-          1, _, _, _, _, 2],
-          Solution),
-  write_grid(Solution).
