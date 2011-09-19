@@ -24,3 +24,5 @@ hash.each {|k, v| puts "The value of #{k.inspect} is #{v.inspect}" }
 queue = []
 %w{foo bar baz}.each {|a| queue.unshift a }
 3.times { puts queue.pop }
+
+# Array as linked list

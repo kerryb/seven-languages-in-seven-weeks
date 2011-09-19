@@ -11,6 +11,10 @@ end
 
 puts "----------"
 
-array.each_slice(4) do |subarray|
-  puts subarray.join " "
+array.each_slice(4) do |slice|
+  puts slice.join " "
 end
+
+puts "----------"
+
+puts array.each_slice(4).map{|s| s.join(" ")}.join("\n")
