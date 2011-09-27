@@ -13,11 +13,12 @@ module ActsAsCsv
       File.open filename do |file|
         @headers = file.gets.chomp.split(", ")
         @csv_contents = file.map {|row| row.chomp.split(", ") }
+        @csv_rows = @csv_contents.map {|row| CsvRow.new headers, row}
       end
     end
 
     def each &block
-      csv_contents.map {|row| CsvRow.new headers, row}.each &block
+      @csv_rows.each &block
     end
 
     class CsvRow
