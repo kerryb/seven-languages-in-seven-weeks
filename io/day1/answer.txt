@@ -1,0 +1,61 @@
+Evaluate 1 + 1 and then 1 + "one". Is Io strongly typed or weakly typed?
+Support your answer with code.
+
+  Io> 1 + 1
+  ==> 2
+  Io> 1 + "one"
+
+    Exception: argument 0 to method '+' must be a Number, not a 'Sequence'
+    ---------
+    message '+' in 'Command Line' on line 1
+
+
+It seems Io is strongly typed.
+
+----
+
+Is 0 true or false? What about the empty string? Is nil true or false? Support
+your answer with code.
+
+  Io> 0 and true
+  ==> true
+  Io> "" and true
+  ==> true
+  Io> nil and true
+  ==> false
+
+0 and "" are true; nil is false (same as Ruby).
+
+----
+
+How can you tell what slots a prototype supports?
+
+  Io> Foo := Object clone
+  ==>  Foo_0x100484290:
+    type             = "Foo"
+
+  Io> Foo bar := 42
+  ==> 42
+  Io> Foo slotNames
+  ==> list(type, bar)
+
+----
+
+What is the difference between = (equals), := (colon equals), and ::= (colon
+colon equals)? When would you use each one?
+
+  Io> Foo baz ::= 69
+  ==> 69
+  Io> Foo slotNames
+  ==> list(baz, setBaz, type, bar)
+  Io> Foo setBaz "wibble"
+  ==> wibble
+  Io> Foo quz = 0
+
+    Exception: Slot quz not found. Must define slot using := operator before updating.
+    ---------
+    message 'updateSlot' in 'Command Line' on line 1
+
+= sets a slot that is already defined. := creates the slot if necessary. ::=
+also creates a setter method (not sure what advantage that gives over setting
+the slot directly).
