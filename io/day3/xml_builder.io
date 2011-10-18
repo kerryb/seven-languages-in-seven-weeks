@@ -1,6 +1,6 @@
 #!/usr/bin/env io
 
-OperatorTable addAssignOperator("=>", "hashRocket")
+OperatorTable addAssignOperator(":", "colon")
 curlyBrackets := method(
   r := Map clone
   call message arguments foreach(arg,
@@ -8,7 +8,7 @@ curlyBrackets := method(
        )
   r
 )
-Map hashRocket := method(
+Map colon := method(
   self atPut(
        call evalArgAt(0) asMutable removePrefix("\"") removeSuffix("\""),
        call evalArgAt(1))
@@ -32,12 +32,12 @@ Builder forward := method(
 )
 
 xml := doString("""
-Builder ul({"id" => "languages", "class" => "root"},
+Builder ul({"id": "languages", "class": "root"},
   li("Io"),
   li("Lua"),
   li("JavaScript"),
   li("Ruby"),
-  ul({"class" => "sublist"},
+  ul({"class": "sublist"},
     li("MRI"),
     li("jRuby"),
     li("Rubinius")
