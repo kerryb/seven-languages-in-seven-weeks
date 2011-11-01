@@ -16,19 +16,16 @@ childrensAuthor(X) :-
   genre(Y, 'Children\'s fiction').
 
 main :-
-  listTechnicalBooks,
   listChildrensAuthors,
-  false.
+  listTechnicalBooks.
 
 listTechnicalBooks :-
   write('Technical books:'), nl,
-  technicalBook(X),
-  writeItem(X).
+  forall(technicalBook(X), writeItem(X)).
 
 listChildrensAuthors :-
   write('Children\'s authors:'), nl,
-  childrensAuthor(Y),
-  writeItem(Y).
+  forall(childrensAuthor(X), writeItem(X)).
 
 writeItem(X) :-
   write('  '), write(X), nl.
