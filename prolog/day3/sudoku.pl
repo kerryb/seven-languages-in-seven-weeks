@@ -1,5 +1,7 @@
 ?- [library(clpfd)].
 
+% Not real tests - just print out the results
+
 test :-
   test_4x4, test_6x6, test_9x9.
 
@@ -41,6 +43,8 @@ test_9x9 :-
 
           Solution),
   write_grid(Solution).
+
+% the actual solver
 
 valid([]).
 valid([Head|Tail]) :-
@@ -90,6 +94,8 @@ square_height_for_size(9, 3).
 puzzleSize(Puzzle, Size) :-
   length(Puzzle, Length),
   Size is round(sqrt(Length)).
+
+% print out the solution (there must be a better way!)
 
 write_grid(List) :-
   puzzleSize(List, Size),
