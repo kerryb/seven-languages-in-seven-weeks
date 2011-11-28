@@ -73,6 +73,70 @@ class ScorerSpec extends Specification {
    "A board with a downward diagonal of Os is won by noughts" in new downwardDiagonalOs {
      scorer.winner must_== "noughts"
    }
+
+   "A board with a top row of Xs is a finished game" in new topRowXs {
+     scorer.finished must beTrue
+   }
+
+   "A board with a top row of Xs is won by crosses" in new topRowXs {
+     scorer.winner must_== "crosses"
+   }
+
+   "A board with a middle row of Xs is a finished game" in new middleRowXs {
+     scorer.finished must beTrue
+   }
+
+   "A board with a middle row of Xs is won by crosses" in new middleRowXs {
+     scorer.winner must_== "crosses"
+   }
+
+   "A board with a bottom row of Xs is a finished game" in new bottomRowXs {
+     scorer.finished must beTrue
+   }
+
+   "A board with a bottom row of Xs is won by crosses" in new bottomRowXs {
+     scorer.winner must_== "crosses"
+   }
+
+   "A board with a left column of Xs is a finished game" in new leftColumnXs {
+     scorer.finished must beTrue
+   }
+
+   "A board with a left column of Xs is won by crosses" in new leftColumnXs {
+     scorer.winner must_== "crosses"
+   }
+
+   "A board with a middle column of Xs is a finished game" in new middleColumnXs {
+     scorer.finished must beTrue
+   }
+
+   "A board with a middle column of Xs is won by crosses" in new middleColumnXs {
+     scorer.winner must_== "crosses"
+   }
+
+   "A board with a right column of Xs is a finished game" in new rightColumnXs {
+     scorer.finished must beTrue
+   }
+
+   "A board with a right column of Xs is won by crosses" in new rightColumnXs {
+     scorer.winner must_== "crosses"
+   }
+
+   "A board with an upward diagonal of Xs is a finished game" in new upwardDiagonalXs {
+     scorer.finished must beTrue
+   }
+
+   "A board with an upward diagonal of Xs is won by crosses" in new upwardDiagonalXs {
+     scorer.winner must_== "crosses"
+   }
+
+   "A board with a downward diagonal of Xs is a finished game" in new downwardDiagonalXs {
+     scorer.finished must beTrue
+   }
+
+   "A board with a downward diagonal of Xs is won by crosses" in new downwardDiagonalXs {
+     scorer.winner must_== "crosses"
+   }
 }
 
 trait emptyBoard extends Scope {
@@ -109,4 +173,36 @@ trait upwardDiagonalOs extends Scope {
 
 trait downwardDiagonalOs extends Scope {
   val scorer = new Scorer("O-X -OX --O")
+}
+
+trait topRowXs extends Scope {
+  val scorer = new Scorer("XXX OO- ---")
+}
+
+trait middleRowXs extends Scope {
+  val scorer = new Scorer("OO- XXX ---")
+}
+
+trait bottomRowXs extends Scope {
+  val scorer = new Scorer("OO- XXX ---")
+}
+
+trait leftColumnXs extends Scope {
+  val scorer = new Scorer("XO- XO- X--")
+}
+
+trait middleColumnXs extends Scope {
+  val scorer = new Scorer("OX- OX- -X-")
+}
+
+trait rightColumnXs extends Scope {
+  val scorer = new Scorer("O-X O-X --X")
+}
+
+trait upwardDiagonalXs extends Scope {
+  val scorer = new Scorer("O-X OX- X--")
+}
+
+trait downwardDiagonalXs extends Scope {
+  val scorer = new Scorer("X-O -XO --X")
 }
