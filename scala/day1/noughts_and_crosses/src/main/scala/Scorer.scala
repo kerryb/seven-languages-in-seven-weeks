@@ -1,4 +1,4 @@
-class Scorer(val board: String) {
+class Scorer(board: String) {
   private class Line(cells: List[Char]) {
     def allNoughts() = cells.forall(c => c == 'O')
     def allCrosses() = cells.forall(c => c == 'X')
@@ -19,8 +19,8 @@ class Scorer(val board: String) {
                      leftColumn, middleColumn, rightColumn,
                      upwardDiagonal, downwardDiagonal)
 
-  private def noughtsWin() = lines.exists(l => l allNoughts())
-  private def crossesWin() = lines.exists(l => l allCrosses())
+  private def noughtsWin() = lines.exists(l => l allNoughts)
+  private def crossesWin() = lines.exists(l => l allCrosses)
   private def tie() = ! board.contains("-")
 
   def finished: Boolean = noughtsWin || crossesWin || tie
