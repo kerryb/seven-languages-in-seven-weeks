@@ -138,11 +138,19 @@ class ScorerSpec extends Specification {
      scorer.winner must_== "crosses"
    }
 
-   "A board with no lines is an unfinished game" in new noLinesIncomplete {
+   "An incomplete board with no lines is an unfinished game" in new noLinesIncomplete {
      scorer.finished must beFalse
    }
 
-   "A board with no lines is won by no-one" in new noLinesIncomplete {
+   "An incomplete board with no lines is won by no-one" in new noLinesIncomplete {
+     scorer.winner must_== "no-one"
+   }
+
+   "A completed board with no lines is a finished game" in new noLinesComplete {
+     scorer.finished must beTrue
+   }
+
+   "A completed board with no lines is won by no-one" in new noLinesComplete {
      scorer.winner must_== "no-one"
    }
 }
@@ -217,4 +225,8 @@ trait downwardDiagonalXs extends Scope {
 
 trait noLinesIncomplete extends Scope {
   val scorer = new Scorer("XXO OO- ---")
+}
+
+trait noLinesComplete extends Scope {
+  val scorer = new Scorer("XXO OOX XXO")
 }
