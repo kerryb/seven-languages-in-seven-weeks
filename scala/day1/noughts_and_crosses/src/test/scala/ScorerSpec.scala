@@ -137,6 +137,14 @@ class ScorerSpec extends Specification {
    "A board with a downward diagonal of Xs is won by crosses" in new downwardDiagonalXs {
      scorer.winner must_== "crosses"
    }
+
+   "A board with no lines is an unfinished game" in new noLinesIncomplete {
+     scorer.finished must beFalse
+   }
+
+   "A board with no lines is won by no-one" in new noLinesIncomplete {
+     scorer.winner must_== "no-one"
+   }
 }
 
 trait emptyBoard extends Scope {
@@ -205,4 +213,8 @@ trait upwardDiagonalXs extends Scope {
 
 trait downwardDiagonalXs extends Scope {
   val scorer = new Scorer("X-O -XO --X")
+}
+
+trait noLinesIncomplete extends Scope {
+  val scorer = new Scorer("XXO OO- ---")
 }
