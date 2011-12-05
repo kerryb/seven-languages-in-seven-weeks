@@ -1,8 +1,7 @@
 trait Censor {
-  val replacements = Map(
-    "shoot" -> "pucky",
-    "darn" -> "beans"
-  )
+  val lines = io.Source.fromFile("replacements.txt").getLines.toList
+  val pairs = lines.map(l => l.split(" "))
+  val replacements = Map() ++ (pairs map (p => (p.head, p.last)))
 
   def content : String
 
