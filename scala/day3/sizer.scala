@@ -5,7 +5,7 @@ import Actor._
 case class PageSize(url: String, size: Double)
 
 object PageLoader {
-  def getPageSize(url : String) = Source.fromURL(url).mkString.length
+  def getPage(url : String) = Source.fromURL(url).mkString
 }
 
 val urls = List("http://www.amazon.com/",
@@ -17,7 +17,8 @@ def getPageInfo() = {
   val caller = self
 
   for(url <- urls) {
-    actor { caller ! new PageSize(url, PageLoader.getPageSize(url)) }
+    val page = PageLoader.getPage(url)
+    actor { caller ! new PageSize(url, page.size) }
   }
 
   for(i <- 1 to urls.size) {
