@@ -2,6 +2,8 @@ import scala.io._
 import scala.actors._
 import Actor._
 
+case class PageSize(url: String, size: Double)
+
 object PageLoader {
   def getPageSize(url : String) = Source.fromURL(url).mkString.length
 }
@@ -20,7 +22,7 @@ def timeMethod(method: () => Unit) = {
 
 def getPageSizeSequentially() = {
   for(url <- urls) {
-    println("Size for " + url + ": " + PageLoader.getPageSize(url))
+    println("PageSize for " + url + ": " + PageLoader.getPageSize(url))
   }
 }
 
@@ -28,12 +30,12 @@ def getPageSizeConcurrently() = {
   val caller = self
 
   for(url <- urls) {
-    actor { caller ! (url, PageLoader.getPageSize(url)) }
+    actor { caller ! new PageSize(url, PageLoader.getPageSize(url)) }
   }
 
   for(i <- 1 to urls.size) {
     receive {
-      case (url, size) =>
+      case PageSize(url, size) =>
       println("Size for " + url + ": " + size)
     }
   }
