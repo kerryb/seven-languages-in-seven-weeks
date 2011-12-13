@@ -13,7 +13,7 @@ val urls = List("http://www.amazon.com/",
   "http://www.google.com/",
   "http://www.cnn.com/" )
 
-def getPageSize() = {
+def getPageInfo() = {
   val caller = self
 
   for(url <- urls) {
@@ -28,4 +28,4 @@ def getPageSize() = {
   }
 }
 
-getPageSize
+getPageInfo
