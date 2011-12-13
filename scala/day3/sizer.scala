@@ -13,20 +13,7 @@ val urls = List("http://www.amazon.com/",
   "http://www.google.com/",
   "http://www.cnn.com/" )
 
-def timeMethod(method: () => Unit) = {
-  val start = System.nanoTime
-  method()
-  val end = System.nanoTime
-  println("Method took " + (end - start)/1000000000.0 + " seconds.")
-}
-
-def getPageSizeSequentially() = {
-  for(url <- urls) {
-    println("PageSize for " + url + ": " + PageLoader.getPageSize(url))
-  }
-}
-
-def getPageSizeConcurrently() = {
+def getPageSize() = {
   val caller = self
 
   for(url <- urls) {
@@ -41,8 +28,4 @@ def getPageSizeConcurrently() = {
   }
 }
 
-println("Sequential run:")
-timeMethod { getPageSizeSequentially }
-
-println("Concurrent run")
-timeMethod { getPageSizeConcurrently }
+getPageSize
