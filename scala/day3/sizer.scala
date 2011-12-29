@@ -1,20 +1,23 @@
+import java.lang.Integer
 import scala.io._
 import scala.actors._
 import Actor._
 
 case class GetInfo(url: String)
-case class PageSize(url: String, size: java.lang.Integer)
-case class LinkCount(url: String, count: java.lang.Integer)
+case class PageSize(url: String, size: Integer)
+case class LinkCount(url: String, count: Integer)
 case object NoMoreRequests
 
 object PageLoader {
   def getPage(url : String) = Source.fromURL(url).mkString
 }
 
-val urls = List("http://www.amazon.com/",
+val urls = List(
+  "http://www.amazon.com/",
   "http://www.twitter.com/",
   "http://www.google.com/",
-  "http://www.cnn.com/" )
+  "http://www.cnn.com/"
+)
 
 def getLinkCount(page: String) = {
   "<a ".r findAllIn(page) size
