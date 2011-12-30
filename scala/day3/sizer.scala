@@ -1,9 +1,15 @@
+import java.lang.Integer
 import scala.io._
 import scala.actors._
 import Actor._
 
+class PageInfo(val size: Integer)
+
 object PageLoader {
-  def getPageSize(url : String) = Source.fromURL(url).mkString.length
+  def getPageInfo(url : String) = {
+    val page = Source.fromURL(url)
+    new PageInfo(page.mkString.length)
+  }
 }
 
 val urls = List("http://www.amazon.com/",
@@ -11,19 +17,19 @@ val urls = List("http://www.amazon.com/",
   "http://www.google.com/",
   "http://www.cnn.com/" )
 
-def getPageInfo() = {
+def run() = {
   val caller = self
 
   for(url <- urls) {
-    actor { caller ! (url, PageLoader.getPageSize(url)) }
+    actor { caller ! (url, PageLoader.getPageInfo(url)) }
   }
 
   for(i <- 1 to urls.size) {
     receive {
-      case (url, size) =>
-      println("Size for " + url + ": " + size)
+      case (url, info: PageInfo) =>
+      println("Size for " + url + ": " + info.size)
     }
   }
 }
 
-getPageInfo
+run
