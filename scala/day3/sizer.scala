@@ -3,12 +3,16 @@ import scala.io._
 import scala.actors._
 import Actor._
 
-class PageInfo(val size: Integer)
+class PageInfo(val size: Integer, val links: List[String])
 
 object PageLoader {
   def getPageInfo(url : String) = {
-    val page = Source.fromURL(url)
-    new PageInfo(page.mkString.length)
+    val page = Source.fromURL(url).mkString
+    new PageInfo(page.length, getLinks(page))
+  }
+
+  private def getLinks(page: String) = {
+    List()
   }
 }
 
