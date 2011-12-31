@@ -3,8 +3,8 @@
 -include_lib("eunit/include/eunit.hrl").
 
 word_count("") -> 0;
-word_count([32,32|T]) -> word_count([32|T]);
-word_count([32|T]) -> 1 + word_count(T);
+word_count("  " ++ T) -> word_count(" " ++ T);
+word_count(" " ++ T) -> 1 + word_count(T);
 word_count([_]) -> 1;
 word_count([_|T]) -> word_count(T).
 
