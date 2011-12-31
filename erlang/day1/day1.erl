@@ -10,11 +10,9 @@ word_count(" " ++ T) -> 1 + word_count(T);
 word_count([_]) -> 1;
 word_count([_|T]) -> word_count(T).
 
-word_count_test() -> [
-    ?assert(word_count("") =:= 0),
-    ?assert(word_count("foo") =:= 1),
-    ?assert(word_count("foo bar") =:= 2),
-    ?assert(word_count("foo    bar") =:= 2),
-    ?assert(word_count("foo\tbar") =:= 2),
-    ?assert(word_count("foo\nbar") =:= 2)
-  ].
+word_count_empty_string_test() -> 0 = word_count("").
+word_count_single_word_test() -> 1 = word_count("foo").
+word_count_two_words_test() -> 2 = word_count("foo bar").
+word_count_multiple_spaces_test() -> 2 = word_count("foo   bar").
+word_count_tab_test() -> 2 = word_count("foo\tbar").
+word_count_newline_test() -> 2 = word_count("foo\nbar").
