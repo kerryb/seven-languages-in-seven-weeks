@@ -1,4 +1,5 @@
 import java.lang.Integer
+import java.net.URI
 import scala.io._
 import scala.actors._
 import scala.util.matching.Regex
@@ -10,8 +11,12 @@ object PageLoader {
   val LinkMatcher = """<a\s[^>]*href\s*=\s*["']([^"']*)""".r
 
   def getPageInfo(url : String) = {
-    val page = Source.fromURL(url).mkString
-    new PageInfo(page.length, getLinks(page))
+    try {
+      val page = Source.fromURL(url).mkString
+      new PageInfo(page.length, getLinks(page))
+    } catch {
+      case e: Exception => System.err.println("Failed to fetch " + url)
+    }
   }
 
   private def getLinks(page: String) = {
@@ -29,15 +34,23 @@ def run() = {
   var messagesRemaining = urls.size
 
   for (url <- urls) {
-    actor { caller ! (url, PageLoader.getPageInfo(url)) }
+    actor { caller ! (url, PageLoader.getPageInfo(url), true) }
   }
 
   while (messagesRemaining > 0) {
     receive {
-      case (url, info: PageInfo) =>
+      case (url: String, info: PageInfo, followLinks: Boolean) =>
         messagesRemaining -= 1
         println("%60s size:  %d bytes".format(url, info.size))
         println("%60s links: %d".format(url, info.links.size))
+      if (followLinks) {
+        messagesRemaining += info.links.size
+
+        for (link <- info.links) {
+          val linkedUrl = new URI(url).resolve(new URI(link)).toString
+          actor { caller ! (linkedUrl, PageLoader.getPageInfo(linkedUrl), false) }
+        }
+      }
     }
   }
 }
