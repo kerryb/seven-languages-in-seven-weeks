@@ -26,16 +26,18 @@ val urls = List("http://www.amazon.com/",
 
 def run() = {
   val caller = self
+  var messagesRemaining = urls.size
 
-  for(url <- urls) {
+  for (url <- urls) {
     actor { caller ! (url, PageLoader.getPageInfo(url)) }
   }
 
-  for(i <- 1 to urls.size) {
+  while (messagesRemaining > 0) {
     receive {
       case (url, info: PageInfo) =>
-      println("%60s size:  %d bytes".format(url, info.size))
-      println("%60s links: %d".format(url, info.links.size))
+        messagesRemaining -= 1
+        println("%60s size:  %d bytes".format(url, info.size))
+        println("%60s links: %d".format(url, info.links.size))
     }
   }
 }
