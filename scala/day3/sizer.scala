@@ -1,18 +1,21 @@
 import java.lang.Integer
 import scala.io._
 import scala.actors._
+import scala.util.matching.Regex
 import Actor._
 
 class PageInfo(val size: Integer, val links: List[String])
 
 object PageLoader {
+  val LinkMatcher = """<a\s[^>]*href\s*=\s*["']([^"']*)""".r
+
   def getPageInfo(url : String) = {
     val page = Source.fromURL(url).mkString
     new PageInfo(page.length, getLinks(page))
   }
 
   private def getLinks(page: String) = {
-    List()
+    LinkMatcher.findAllIn(page).matchData.map (m => m.group(1)).toList
   }
 }
 
@@ -31,7 +34,8 @@ def run() = {
   for(i <- 1 to urls.size) {
     receive {
       case (url, info: PageInfo) =>
-      println("Size for " + url + ": " + info.size)
+      println(url + " is " + info.size + " bytes")
+      println(url + " has " + info.links.size + " links")
     }
   }
 }
