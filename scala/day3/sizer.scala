@@ -34,8 +34,8 @@ def run() = {
   for(i <- 1 to urls.size) {
     receive {
       case (url, info: PageInfo) =>
-      println(url + " is " + info.size + " bytes")
-      println(url + " has " + info.links.size + " links")
+      println("%60s size:  %d bytes".format(url, info.size))
+      println("%60s links: %d".format(url, info.links.size))
     }
   }
 }
