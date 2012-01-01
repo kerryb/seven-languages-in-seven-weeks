@@ -1,4 +1,4 @@
--module(day1).
+-module(word_count).
 -export([word_count/1]).
 -include_lib("eunit/include/eunit.hrl").
 
