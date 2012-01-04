@@ -4,4 +4,4 @@
 
 state(_) -> no_winner.
 
-empty_board_test() -> no_winner = state([' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']).
+empty_board_test() -> no_winner = state(['', '', '', '', '', '', '', '', '']).
