@@ -2,8 +2,19 @@
 -export([state/1]).
 -include_lib("eunit/include/eunit.hrl").
 
-state([o, o, o|_]) -> o;
-state(_) -> no_winner.
+state(Board) -> find_winner(lines(Board)).
+
+find_winner([[o, o, o]|_]) -> o;
+find_winner([[x, x, x]|_]) -> x;
+find_winner([_|T]) -> find_winner(T);
+find_winner(_) -> no_winner.
+
+lines([A, B, C, D, E, F, G, H, I]) -> [
+    [A, B, C], [D, E, F], [G, H, I],
+    [A, D, G], [B, E, H], [C, F, I],
+    [A, E, I], [C, E, G]].
+
+% Tests
 
 empty_board_test() -> no_winner = state([
       '', '', '',
@@ -11,11 +22,86 @@ empty_board_test() -> no_winner = state([
       '', '', '']).
 
 unfinished_game_test() -> no_winner = state([
-      '',  x,  o,
-       o,  o,  x,
-       x, '', '']).
+      '', x, o,
+      o, o, x,
+      x, '', '']).
 
 top_row_noughts_test() -> o = state([
-       o,  o,  o,
-       x,  x, '',
+      o, o, o,
+      x, x, '',
       '', '', '']).
+
+middle_row_noughts_test() -> o = state([
+      x, x, '',
+      o, o, o,
+      '', '', '']).
+
+bottom_row_noughts_test() -> o = state([
+      x, x, '',
+      '', '', '',
+      o, o, o]).
+
+left_column_noughts_test() -> o = state([
+      o, x, '',
+      o, x, '',
+      o, '', '']).
+
+middle_column_noughts_test() -> o = state([
+      x, o, '',
+      '', o, x,
+      '', o, '']).
+
+right_column_noughts_test() -> o = state([
+      x, '', o,
+      '', x, o,
+      '', '', o]).
+
+upward_diagonal_noughts_test() -> o = state([
+      x, '', o,
+      x, o, '',
+      o, '', '']).
+
+downward_diagonal_noughts_test() -> o = state([
+      o, x, x,
+      '', o, '',
+      '', '', o]).
+
+top_row_crosses_test() -> x = state([
+      x, x, x,
+      o, o, '',
+      '', '', '']).
+
+middle_row_crosses_test() -> x = state([
+      o, o, '',
+      x, x, x,
+      '', '', '']).
+
+bottom_row_crosses_test() -> x = state([
+      o, o, '',
+      '', '', '',
+      x, x, x]).
+
+left_column_crosses_test() -> x = state([
+      x, o, '',
+      x, o, '',
+      x, '', '']).
+
+middle_column_crosses_test() -> x = state([
+      o, x, '',
+      '', x, o,
+      '', x, '']).
+
+right_column_crosses_test() -> x = state([
+      o, '', x,
+      '', o, x,
+      '', '', x]).
+
+upward_diagonal_crosses_test() -> x = state([
+      o, '', x,
+      o, x, '',
+      x, '', '']).
+
+downward_diagonal_crosses_test() -> x = state([
+      x, o, o,
+      '', x, '',
+      '', '', x]).
