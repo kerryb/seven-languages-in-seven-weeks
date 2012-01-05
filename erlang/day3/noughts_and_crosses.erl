@@ -2,17 +2,22 @@
 -export([state/1]).
 -include_lib("eunit/include/eunit.hrl").
 
-state(Board) -> find_winner(lines(Board)).
+state(Board) -> case completed(Board) of
+    true -> cat; % "cat"? No idea, but it's what the book says.
+    false -> winner(lines(Board))
+  end.
 
-find_winner([[o, o, o]|_]) -> o;
-find_winner([[x, x, x]|_]) -> x;
-find_winner([_|T]) -> find_winner(T);
-find_winner(_) -> no_winner.
+winner([[o, o, o]|_]) -> o;
+winner([[x, x, x]|_]) -> x;
+winner([_|T]) -> winner(T);
+winner(_) -> no_winner.
 
 lines([A, B, C, D, E, F, G, H, I]) -> [
     [A, B, C], [D, E, F], [G, H, I],
     [A, D, G], [B, E, H], [C, F, I],
     [A, E, I], [C, E, G]].
+
+completed(Board) -> lists:all(fun(X) -> X =/= '' end, Board).
 
 % Tests
 
@@ -25,6 +30,11 @@ unfinished_game_test() -> no_winner = state([
       '', x, o,
       o, o, x,
       x, '', '']).
+
+finished_game_test() -> cat = state([
+      x, x, o,
+      o, o, x,
+      x, x, o]).
 
 top_row_noughts_test() -> o = state([
       o, o, o,
