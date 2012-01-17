@@ -7,17 +7,17 @@ state(Board) -> case completed(Board) of
     false -> winner(lines(Board))
   end.
 
-winner([[o, o, o]|_]) -> o;
-winner([[x, x, x]|_]) -> x;
-winner([_|T]) -> winner(T);
-winner(_) -> no_winner.
+completed(Board) -> lists:all(fun(X) -> X =/= '' end, Board).
 
 lines([A, B, C, D, E, F, G, H, I]) -> [
     [A, B, C], [D, E, F], [G, H, I],
     [A, D, G], [B, E, H], [C, F, I],
     [A, E, I], [C, E, G]].
 
-completed(Board) -> lists:all(fun(X) -> X =/= '' end, Board).
+winner([[o, o, o]|_]) -> o;
+winner([[x, x, x]|_]) -> x;
+winner([_|T]) -> winner(T);
+winner(_) -> no_winner.
 
 % Tests
 
