@@ -2,16 +2,18 @@
 -export([word_count/1]).
 -include_lib("eunit/include/eunit.hrl").
 
-word_count(A) -> word_count(no_ws, re:replace(A, "\\s+", " ", [global, {return, list}])).
-word_count(no_ws, "") -> 0;
-word_count(no_ws, " ") -> 0;
-word_count(no_ws, " " ++ T) -> 1 + word_count(no_ws, T);
-word_count(no_ws, [_]) -> 1;
-word_count(no_ws, [_|T]) -> word_count(no_ws, T).
+word_count(A) -> word_count(not_in_word, re:replace(A, "\\s+", " ", [global, {return, list}])).
+word_count(_, "") -> 0;
+word_count(_, " " ++ T) -> word_count(not_in_word, T);
+word_count(not_in_word, [_|T]) -> 1 + word_count(in_word, T);
+word_count(in_word, " " ++ T) -> word_count(not_in_word, T);
+word_count(in_word, [_|T]) -> word_count(in_word, T).
 
 word_count_empty_string_test() -> 0 = word_count("").
 word_count_single_word_test() -> 1 = word_count("foo").
 word_count_two_words_test() -> 2 = word_count("foo bar").
+word_count_leading_whitespace_test() -> 1 = word_count(" foo").
+word_count_trailing_whitespace_test() -> 1 = word_count("foo ").
 word_count_multiple_spaces_test() -> 2 = word_count("foo   bar").
 word_count_just_whitespace_test() -> 0 = word_count(" \n\t  \n").
 word_count_tab_test() -> 2 = word_count("foo\tbar").
