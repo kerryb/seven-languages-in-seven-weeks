@@ -2,22 +2,22 @@
 -export([state/1]).
 -include_lib("eunit/include/eunit.hrl").
 
-state(Board) -> case completed(Board) of
-    true -> cat; % "cat"? No idea, but it's what the book says.
-    false -> winner(lines(Board))
-  end.
-
-completed(Board) -> lists:all(fun(X) -> X =/= '' end, Board).
+state(Board) -> winner(Board, lines(Board)).
 
 lines([A, B, C, D, E, F, G, H, I]) -> [
     [A, B, C], [D, E, F], [G, H, I],
     [A, D, G], [B, E, H], [C, F, I],
     [A, E, I], [C, E, G]].
 
-winner([[o, o, o]|_]) -> o;
-winner([[x, x, x]|_]) -> x;
-winner([_|T]) -> winner(T);
-winner(_) -> no_winner.
+winner(_, [[o, o, o]|_]) -> o;
+winner(_, [[x, x, x]|_]) -> x;
+winner(Board, [_|T]) -> winner(Board, T);
+winner(Board, _) -> case completed(Board) of
+    true -> cat; % "cat"? No idea, but it's what the book says.
+    false -> no_winner
+  end.
+
+completed(Board) -> lists:all(fun(X) -> X =/= '' end, Board).
 
 % Tests
 
@@ -115,3 +115,8 @@ downward_diagonal_crosses_test() -> x = state([
       x, o, o,
       '', x, '',
       '', '', x]).
+
+win_on_last_move_test() -> x = state([
+      x, o, x,
+      x, x, o,
+      o, o, x]).
