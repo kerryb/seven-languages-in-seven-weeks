@@ -15,7 +15,7 @@ init([File]) -> {ok, File}.
 
 handle_call(Message, From, File) ->
   {ok, F} = file:open(File, [append]),
-  io:format(F, "~w: ~w.~n", [From, Message]),
+  io:format(F, "~w: ~p~n", [From, Message]),
   file:close(F),
   {reply, ok, File}.
 
