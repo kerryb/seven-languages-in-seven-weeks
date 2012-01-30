@@ -14,7 +14,9 @@ log(Message) -> gen_server:call(?MODULE, {Message}).
 init([File]) -> {ok, File}.
 
 handle_call(Message, From, File) ->
-  io:format("~w: ~w.~n", [From, Message]),
+  {ok, F} = file:open(File, write),
+  io:format(F, "~w: ~w.~n", [From, Message]),
+  file:close(F),
   {reply, ok, File}.
 
 % Required but unused
