@@ -9,7 +9,7 @@
 
 start(File) -> gen_server:start_link({local, ?MODULE}, ?MODULE, [File], []).
 
-log(Message) -> gen_server:call(?MODULE, {Message}). 
+log(Message) -> gen_server:call(?MODULE, Message). 
 
 init([File]) -> {ok, File}.
 
