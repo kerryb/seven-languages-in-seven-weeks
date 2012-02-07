@@ -1,6 +1,6 @@
 (ns day1.test.core
   (:use [day1.core])
-  (:use [clojure.test]))
+  (:use clojure.test midje.sweet))
 
-(deftest replace-me ;; FIXME: write
-  (is false "No tests have been written."))
+(fact
+  (big "foo" 2) => false)
