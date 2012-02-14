@@ -18,6 +18,16 @@
       (provided
         (foo) => 42))
 
+(fact "unless/3 when true returns result of calling the second function"
+      (unless true (foo) (bar)) => 69
+      (provided
+        (bar) => 69))
+
+(fact "unless/3 when true doesn't call the first function"
+      (unless true (foo) (bar)) => 69
+      (provided
+        (bar) => 69
+        (foo) => 1 :times 0))
 
 (fact "unless/3 when false returns result of calling the first function"
       (unless false (foo) (bar)) => 42
