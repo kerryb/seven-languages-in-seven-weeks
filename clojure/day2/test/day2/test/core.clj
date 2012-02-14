@@ -2,8 +2,10 @@
   (:use [day2.core])
   (:use clojure.test midje.sweet))
 
-(fact "unless when false returns nil"
-  (unless true :foo) => nil)
+(defn foo ([] :bar))
 
-(fact "unless when true returns argument"
-  (unless false :foo) => :foo)
+(fact "unless when false returns nil"
+  (unless true (foo)) => nil)
+
+(fact "unless when true returns result of second argument"
+  (unless false (foo)) => :bar)
