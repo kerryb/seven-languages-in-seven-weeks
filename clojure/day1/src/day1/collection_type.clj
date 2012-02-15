@@ -1,7 +1,4 @@
-(ns day1.core)
-
-(defn big
-  ([st n] (> (count st) n)))
+(ns day1.collection-type)
 
 (defmulti collection-type class)
 (defmethod collection-type clojure.lang.IPersistentList [x] :list)

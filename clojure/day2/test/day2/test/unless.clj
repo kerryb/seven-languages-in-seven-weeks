@@ -1,5 +1,5 @@
-(ns day2.test.core
-  (:use [day2.core])
+(ns day2.test.unless
+  (:use [day2.unless])
   (:use clojure.test midje.sweet))
 
 (defn foo ([] :foo))
