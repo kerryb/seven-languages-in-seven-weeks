@@ -15,3 +15,8 @@
       (def accounts (create_accounts [10, 20, 30]))
       (credit (nth accounts 1) 5)
       (map deref accounts) => [10, 25, 30])
+
+(fact "Money can be transferred between accounts"
+      (def accounts (create_accounts [10, 20, 30]))
+      (transfer (nth accounts 1) (nth accounts 2) 10)
+      (map deref accounts) => [10, 10, 40])
