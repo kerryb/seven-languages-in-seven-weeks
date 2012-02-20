@@ -13,3 +13,13 @@
       (runner f 1) => nil
       (provided
         (f) => 0 :times (> 1)))
+
+(fact "A customer arriving when there's a free chair sits down"
+      (def waiting-room (new-waiting-room 3))
+      (customer-arrives waiting-room)
+      (alength (.toArray waiting-room)) => 1)
+
+(fact "A customer arriving when there's no free chair leaves"
+      (def waiting-room (new-waiting-room 3))
+      (dorun (repeatedly 4 #(customer-arrives waiting-room)))
+      (alength (.toArray waiting-room)) => 3)
