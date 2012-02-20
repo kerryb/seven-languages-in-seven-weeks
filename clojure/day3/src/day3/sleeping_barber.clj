@@ -9,3 +9,6 @@
 
 (defn customer-arrives [q]
   (.offer q :a-customer))
+
+(defn serve-customer [q]
+  (.take q))

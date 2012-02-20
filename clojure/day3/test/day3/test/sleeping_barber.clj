@@ -23,3 +23,16 @@
       (def waiting-room (new-waiting-room 3))
       (dorun (repeatedly 4 #(customer-arrives waiting-room)))
       (alength (.toArray waiting-room)) => 3)
+
+(fact "Serving a customer removes them from the queue"
+      (def waiting-room (new-waiting-room 3))
+      (customer-arrives waiting-room)
+      (serve-customer waiting-room)
+      (alength (.toArray waiting-room)) => 0)
+
+(fact "If there are no customers, the barber waits"
+      (def waiting-room (new-waiting-room 3))
+      (def start (System/currentTimeMillis))
+      (future ((Thread/sleep 100) (customer-arrives waiting-room)))
+      (serve-customer waiting-room)
+      (- (System/currentTimeMillis) start) => (roughly 100 10))
