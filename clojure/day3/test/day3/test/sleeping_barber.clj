@@ -14,24 +14,22 @@
       (provided
         (f) => 0 :times (> 1)))
 
+(background (before :facts (def waiting-room (new-waiting-room 3))))
+
 (fact "A customer arriving when there's a free chair sits down"
-      (def waiting-room (new-waiting-room 3))
       (customer-arrives waiting-room)
       (alength (.toArray waiting-room)) => 1)
 
 (fact "A customer arriving when there's no free chair leaves"
-      (def waiting-room (new-waiting-room 3))
       (dorun (repeatedly 4 #(customer-arrives waiting-room)))
       (alength (.toArray waiting-room)) => 3)
 
 (fact "Serving a customer removes them from the queue"
-      (def waiting-room (new-waiting-room 3))
       (customer-arrives waiting-room)
       (serve-customer waiting-room)
       (alength (.toArray waiting-room)) => 0)
 
 (fact "If there are no customers, the barber waits"
-      (def waiting-room (new-waiting-room 3))
       (def start (System/currentTimeMillis))
       (future ((Thread/sleep 100) (customer-arrives waiting-room)))
       (serve-customer waiting-room)
