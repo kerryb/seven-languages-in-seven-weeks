@@ -12,3 +12,11 @@
 
 (defn serve-customer [q]
   (.take q))
+
+(defn cut-hair [q]
+  (serve-customer q)
+  (Thread/sleep 20)
+  (cut-hair q))
+
+(defn start-cutting-hair [q]
+  (future (cut-hair q)))

@@ -31,6 +31,15 @@
 
 (fact "If there are no customers, the barber waits"
       (def start (System/currentTimeMillis))
-      (future ((Thread/sleep 100) (customer-arrives waiting-room)))
+      (def customer (future ((Thread/sleep 100) (customer-arrives waiting-room))))
       (serve-customer waiting-room)
-      (- (System/currentTimeMillis) start) => (roughly 100 10))
+      (future-cancel customer)
+      (- (System/currentTimeMillis) start) => (roughly 100 20))
+
+(fact "The barber serves a customer every 20ms"
+      (def start (System/currentTimeMillis))
+      (dorun (repeatedly 3 #(customer-arrives waiting-room)))
+      (def barber (start-cutting-hair waiting-room))
+      (while (not (.isEmpty waiting-room)) (Thread/sleep 1))
+      (future-cancel barber)
+      (- (System/currentTimeMillis) start) => (roughly 40 10)) ; Time doesn't include last customer
