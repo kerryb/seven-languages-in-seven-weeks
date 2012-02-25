@@ -1,9 +1,5 @@
 (ns day3.sleeping-barber)
 
-(defn runner [f time]
-  (let [end (+ (System/currentTimeMillis) (* time 1000))]
-    (while (< (System/currentTimeMillis) end) (f))))
-
 (defn new-waiting-room [number-of-chairs]
   (java.util.concurrent.LinkedBlockingQueue. number-of-chairs))
 
@@ -37,3 +33,15 @@
 
 (defn haircuts-given []
   (deref haircut-count))
+
+;; Run (load "day3/sleeping_barber") (day3.sleeping-barber/run) in REPL to
+;; simulate ten seconds' worth of haircuts
+(defn run []
+  (let [end (+ (System/currentTimeMillis) 10000)
+        waiting-room (new-waiting-room 3)
+        barber (start-cutting-hair waiting-room)
+        customers (start-customers-arriving waiting-room)]
+    (while (< (System/currentTimeMillis) end) (Thread/sleep 1))
+    (future-cancel customers)
+    (future-cancel barber))
+  (haircuts-given))
