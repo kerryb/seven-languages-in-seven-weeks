@@ -1,5 +1,5 @@
-(ns day3.test.sleeping-barber
-  (:use [day3.sleeping-barber])
+(ns day3.test.sleeping-barber.queue
+  (:use [day3.sleeping-barber.queue])
   (:use clojure.test midje.sweet))
 
 (background (before :facts (def waiting-room (new-waiting-room 3))))

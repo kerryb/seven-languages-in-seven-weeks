@@ -1,4 +1,6 @@
-(ns day3.sleeping-barber)
+;; Implementation using a blocking queue. This is completely separate from the
+;; version using callbacks.
+(ns day3.sleeping-barber.queue)
 
 (defn new-waiting-room [number-of-chairs]
   (java.util.concurrent.LinkedBlockingQueue. number-of-chairs))
@@ -34,8 +36,8 @@
 (defn haircuts-given []
   (deref haircut-count))
 
-;; Run (load "day3/sleeping_barber") (day3.sleeping-barber/run) in REPL to
-;; simulate ten seconds' worth of haircuts
+;; Run (load "day3/sleeping_barber/queue") (day3.sleeping-barber.queue/run) in
+;; REPL to simulate ten seconds' worth of haircuts
 (defn run []
   (let [end (+ (System/currentTimeMillis) 10000)
         waiting-room (new-waiting-room 3)
