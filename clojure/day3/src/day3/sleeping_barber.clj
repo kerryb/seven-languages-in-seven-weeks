@@ -20,3 +20,14 @@
 
 (defn start-cutting-hair [q]
   (future (cut-hair q)))
+
+(defn customer-gap []
+  (+ 10 (rand-int 20)))
+
+(defn customer-stream [q]
+  (Thread/sleep (customer-gap))
+  (customer-arrives q)
+  (customer-stream q))
+
+(defn start-customers-arriving [q]
+  (future (customer-stream q)))
