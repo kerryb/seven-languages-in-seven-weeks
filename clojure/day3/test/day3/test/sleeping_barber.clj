@@ -29,6 +29,13 @@
       (serve-customer waiting-room)
       (alength (.toArray waiting-room)) => 0)
 
+(fact "The barber keeps count of how many customers he's served"
+      (dorun (repeatedly 3 #(customer-arrives waiting-room)))
+      (def barber (start-cutting-hair waiting-room))
+      (while (not (.isEmpty waiting-room)) (Thread/sleep 1))
+      (future-cancel barber)
+      (haircuts-given) => 3)
+
 (fact "If there are no customers, the barber waits"
       (def start (System/currentTimeMillis))
       (def customer (future ((Thread/sleep 200) (customer-arrives waiting-room))))

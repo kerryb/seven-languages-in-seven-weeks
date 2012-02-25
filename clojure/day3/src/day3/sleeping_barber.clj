@@ -7,6 +7,8 @@
 (defn new-waiting-room [number-of-chairs]
   (java.util.concurrent.LinkedBlockingQueue. number-of-chairs))
 
+(def haircut-count (ref 0))
+
 (defn customer-arrives [q]
   (.offer q :a-customer))
 
@@ -15,6 +17,7 @@
 
 (defn cut-hair [q]
   (serve-customer q)
+  (dosync (alter haircut-count + 1))
   (Thread/sleep 20)
   (cut-hair q))
 
@@ -31,3 +34,6 @@
 
 (defn start-customers-arriving [q]
   (future (customer-stream q)))
+
+(defn haircuts-given []
+  (deref haircut-count))
