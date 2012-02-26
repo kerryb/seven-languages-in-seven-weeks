@@ -3,15 +3,20 @@
 (ns day3.sleeping-barber.callbacks)
 
 (def customers-waiting (ref 0))
+(def barber-busy (ref false))
 
 (defn open-shop []
-  (dosync (ref-set customers-waiting 0)))
+  (dosync
+    (ref-set customers-waiting 0)
+    (ref-set barber-busy false)))
+
+(defn serve-customer []
+  (if (> (deref customers-waiting) 0)
+    (dosync (alter customers-waiting - 1))))
 
 (defn customer-arrives []
-  (if (< (deref customers-waiting) 3)
-    (dosync (alter customers-waiting + 1))))
-
-;; Run (load "day3/sleeping_barber/callbacks")
-;; (day3.sleeping-barber.callbacks/run) in REPL to simulate ten seconds' worth
-;; of haircuts
-(defn run [])
+  (dosync
+    (if (< (deref customers-waiting) 3)
+      (alter customers-waiting + 1))
+    (if (not (deref barber-busy))
+      (serve-customer))))
