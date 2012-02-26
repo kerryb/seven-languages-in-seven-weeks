@@ -4,8 +4,12 @@
 
 (def customers-waiting (ref 0))
 
+(defn open-shop []
+  (dosync (ref-set customers-waiting 0)))
+
 (defn customer-arrives []
-  (dosync (alter customers-waiting + 1)))
+  (if (< (deref customers-waiting) 3)
+    (dosync (alter customers-waiting + 1))))
 
 ;; Run (load "day3/sleeping_barber/callbacks")
 ;; (day3.sleeping-barber.callbacks/run) in REPL to simulate ten seconds' worth
