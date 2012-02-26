@@ -26,6 +26,12 @@
                           (deref customers-waiting) => 0))
 
 (fact "A new customer gets a haircut immediately if the barber isn't busy"
-      (dosync (ref-set barber-busy false))
       (customer-arrives)
       (deref customers-waiting) => 0)
+
+(fact "The barber serves a new customer when he finishes a haircut"
+      (def start (System/currentTimeMillis))
+      (dorun (repeatedly 2 #(customer-arrives)))
+      (while (> (deref customers-waiting) 0) (Thread/sleep 1))
+      (- (System/currentTimeMillis) start) => (roughly 20 5))
+
