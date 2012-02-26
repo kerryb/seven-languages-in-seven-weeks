@@ -11,11 +11,11 @@
     (ref-set barber-busy false)))
 
 (defn serve-customer []
-  (if (> (deref customers-waiting) 0)
-    (dosync
-      (ref-set barber-busy true)
-      (alter customers-waiting - 1))
-    (future (Thread/sleep 20) (serve-customer))))
+  (dosync
+    (if (> (deref customers-waiting) 0)
+      (do (ref-set barber-busy true)
+      (alter customers-waiting - 1)
+      (future (Thread/sleep 20) (serve-customer))))))
 
 (defn customer-arrives []
   (dosync
