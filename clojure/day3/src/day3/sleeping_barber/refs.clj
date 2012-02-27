@@ -1,6 +1,6 @@
-;; Implementation using callbacks. This is completely separate from the version
+;; Implementation using refs. This is completely separate from the version
 ;; using a blocking queue.
-(ns day3.sleeping-barber.callbacks)
+(ns day3.sleeping-barber.refs)
 
 (def customers-waiting (ref 0))
 (def shop-open (ref false))

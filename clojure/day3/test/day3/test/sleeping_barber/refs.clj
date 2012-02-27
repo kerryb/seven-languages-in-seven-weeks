@@ -1,5 +1,5 @@
-(ns day3.test.sleeping-barber.callbacks
-  (:use [day3.sleeping-barber.callbacks])
+(ns day3.test.sleeping-barber.refs
+  (:use [day3.sleeping-barber.refs])
   (:use clojure.test midje.sweet))
 
 (background (before :facts (open-shop)))
