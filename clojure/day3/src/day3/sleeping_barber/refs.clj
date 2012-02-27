@@ -41,3 +41,13 @@
     (Thread/sleep (customer-gap))
     (customer-arrives)
     (if (deref shop-open) (start-customers-arriving))))
+
+;; Run (load "day3/sleeping_barber/refs") (day3.sleeping-barber.refs/run) in
+;; REPL to simulate ten seconds' worth of haircuts
+(defn run []
+  (let [end (+ (System/currentTimeMillis) 10000)]
+    (open-shop)
+    (start-customers-arriving)
+    (while (< (System/currentTimeMillis) end) (Thread/sleep 1)))
+  (close-shop)
+  (deref haircuts-given))
