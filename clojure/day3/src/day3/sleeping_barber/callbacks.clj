@@ -3,12 +3,18 @@
 (ns day3.sleeping-barber.callbacks)
 
 (def customers-waiting (ref 0))
+(def shop-open (ref false))
 (def barber-busy (ref false))
 
 (defn open-shop []
   (dosync
     (ref-set customers-waiting 0)
+    (ref-set shop-open true)
     (ref-set barber-busy false)))
+
+(defn close-shop []
+  (dosync
+    (ref-set shop-open false)))
 
 (defn serve-customer []
   (dosync
@@ -23,3 +29,12 @@
       (alter customers-waiting + 1))
     (if (not (deref barber-busy))
       (serve-customer))))
+
+(defn customer-gap []
+  (+ 10 (rand-int 20)))
+
+(defn start-customers-arriving []
+  (future
+    (Thread/sleep (customer-gap))
+    (customer-arrives)
+    (if (deref shop-open) (start-customers-arriving))))

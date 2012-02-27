@@ -7,6 +7,15 @@
 (fact "When the shop opens there's no-one waiting"
       (deref customers-waiting) => 0)
 
+(fact "Opening the shop initialises everything"
+      (deref customers-waiting) => 0
+      (deref shop-open) => true
+      (deref barber-busy) => false)
+
+(fact "Closing the shop updates the state"
+      (close-shop)
+      (deref shop-open) => false)
+
 (against-background [(before :facts (dosync (ref-set barber-busy true)))]
                     (fact "A new customer sits down if there are fewer than three customers waiting"
                           (dorun (repeatedly 3 #(customer-arrives)))
@@ -23,15 +32,19 @@
 
                     (fact "If there are no customers waiting when the barber's ready he does nothing"
                           (serve-customer)
-                          (deref customers-waiting) => 0))
+                          (deref customers-waiting) => 0)
+
+                    (fact "Customers keep arriving until the shop shuts"
+                          ; Should really test timings, but currently just
+                          ; checks that it doesn't run forever
+                          (start-customers-arriving)
+                          (while (< (deref customers-waiting) 3) (Thread/sleep 1))
+                          (close-shop)))
 
 (fact "A new customer gets a haircut immediately if the barber isn't busy"
       (customer-arrives)
       (deref customers-waiting) => 0)
 
 (fact "The barber serves a new customer when he finishes a haircut"
-      (def start (System/currentTimeMillis))
       (dorun (repeatedly 2 #(customer-arrives)))
-      (while (> (deref customers-waiting) 0) (Thread/sleep 1))
-      (- (System/currentTimeMillis) start) => (roughly 20 5))
-
+      (while (> (deref customers-waiting) 0) (Thread/sleep 1)))
