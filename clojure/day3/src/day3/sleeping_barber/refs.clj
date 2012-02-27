@@ -2,12 +2,14 @@
 ;; using a blocking queue.
 (ns day3.sleeping-barber.refs)
 
+(def haircuts-given (ref 0))
 (def customers-waiting (ref 0))
 (def shop-open (ref false))
 (def barber-busy (ref false))
 
 (defn open-shop []
   (dosync
+    (ref-set haircuts-given 0)
     (ref-set customers-waiting 0)
     (ref-set shop-open true)
     (ref-set barber-busy false)))
@@ -21,6 +23,7 @@
     (if (> (deref customers-waiting) 0)
       (do (ref-set barber-busy true)
       (alter customers-waiting - 1)
+      (alter haircuts-given + 1)
       (future (Thread/sleep 20) (serve-customer))))))
 
 (defn customer-arrives []

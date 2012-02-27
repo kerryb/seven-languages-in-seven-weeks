@@ -48,3 +48,8 @@
 (fact "The barber serves a new customer when he finishes a haircut"
       (dorun (repeatedly 2 #(customer-arrives)))
       (while (> (deref customers-waiting) 0) (Thread/sleep 1)))
+
+(fact "The number of haircuts given is recorded"
+      (dorun (repeatedly 2 #(customer-arrives)))
+      (while (> (deref customers-waiting) 0) (Thread/sleep 1))
+      (deref haircuts-given) => 2)
