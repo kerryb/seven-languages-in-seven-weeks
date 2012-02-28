@@ -1,13 +1,22 @@
 # day3
 
-FIXME: write description
+Day three clojure exercises from Seven Languages in Seven Weeks
 
 ## Usage
 
-FIXME: write
+"lein deps" then "lein midje" to run all the tests.
+
+To run the sleeping barber simulations (how many haircuts in ten seconds?), run
+"lein repl", then the folowing commands:
+
+  ; first version, using a java.util.concurrent.LinkedBlockingQueue:
+  (load "day3/sleeping_barber/queue")
+  (day3.sleeping-barber.queue/run)
+
+  ; second version, just using refs:
+  (load "day3/sleeping_barber/refs")
+  (day3.sleeping-barber.refs/run)
 
 ## License
 
-Copyright (C) 2012 FIXME
-
-Distributed under the Eclipse Public License, the same as Clojure.
+Public domain
