@@ -49,6 +49,11 @@
       (dorun (repeatedly 2 #(customer-arrives)))
       (while (> (deref customers-waiting) 0) (Thread/sleep 1)))
 
+(fact "When the barber has no customers left he isn't busy"
+      (dorun (repeatedly 2 #(customer-arrives)))
+      (while (deref barber-busy) (Thread/sleep 1))
+      (deref customers-waiting) => 0)
+
 (fact "The number of haircuts given is recorded"
       (dorun (repeatedly 2 #(customer-arrives)))
       (while (> (deref customers-waiting) 0) (Thread/sleep 1))
