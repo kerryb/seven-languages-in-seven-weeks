@@ -2,7 +2,7 @@ module Colours where
   import Test.QuickCheck
 
   data Colours = Black | Blue | Red | White | Yellow
-    deriving (Enum, Eq, Ord, Show)
+    deriving (Eq, Ord, Show)
 
   colour_pairs = [(a,b) | a <- colours, b <- colours, a < b] where
     colours = [Black, Blue, Red, White, Yellow]
