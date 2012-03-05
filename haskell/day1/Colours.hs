@@ -14,4 +14,3 @@ module Colours where
     (Blue, Red), (Blue, White), (Blue, Yellow),
     (Red, White), (Red, Yellow),
     (White, Yellow)]
-
