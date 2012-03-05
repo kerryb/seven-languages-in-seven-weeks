@@ -3,7 +3,7 @@ module AllEven.Foldr where
   import Data.List
 
   allEven :: [Integer] -> [Integer]
-  allEven (xs) = foldr appendIfEven [] xs
+  allEven xs = foldr appendIfEven [] xs
     where appendIfEven x acc = if even x then x:acc else acc
 
   {-tests-}
