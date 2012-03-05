@@ -11,3 +11,4 @@ module AllEven.Guards where
   {-tests-}
   prop_selected_all_even xs = all even (allEven xs)
   prop_rejected_all_odd xs = all odd (xs \\ allEven xs)
+  prop_retains_order xs = (xs \\ (xs \\ allEven xs)) == allEven xs
