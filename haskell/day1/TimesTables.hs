@@ -1,5 +1,6 @@
 module TimesTables where
   import Test.QuickCheck
+  import Data.List
 
   timesTables = [(b,a,a*b) | a <- [2..12], b <- [1..12]]
 
@@ -17,3 +18,14 @@ module TimesTables where
     (1,10,10), (2,10,20), (3,10,30), (4,10,40), (5,10,50), (6,10,60), (7,10,70), (8,10,80), (9,10,90), (10,10,100), (11,10,110), (12,10,120),
     (1,11,11), (2,11,22), (3,11,33), (4,11,44), (5,11,55), (6,11,66), (7,11,77), (8,11,88), (9,11,99), (10,11,110), (11,11,121), (12,11,132),
     (1,12,12), (2,12,24), (3,12,36), (4,12,48), (5,12,60), (6,12,72), (7,12,84), (8,12,96), (9,12,108), (10,12,120), (11,12,132), (12,12,144)]
+
+  prop_132_elements = length timesTables == 132
+
+  prop_all_different = nub timesTables == timesTables
+
+  prop_tables_2_to_12 = nub [b | (a, b, c) <- timesTables] == [2..12]
+
+  prop_multipliers_1_to_12 = nub [a | (a, b, c) <- timesTables] == [1..12]
+
+  prop_product = all isProduct timesTables where
+    isProduct (a, b, c) = a * b == c
