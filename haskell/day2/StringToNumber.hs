@@ -1,7 +1,8 @@
 module StringToNumber where
   import Test.QuickCheck
 
-  to_number s = foldl (\a b -> 10 * a + (to_digit b)) 0 (filter (\x -> elem x ['0'..'9']) s)
+  to_number s = foldl (\a b -> 10 * a + (to_digit b)) 0 digits where
+    digits = (filter (\x -> elem x ['0'..'9']) s)
   to_digit c = case c of
     '1' -> 1
     '2' -> 2
