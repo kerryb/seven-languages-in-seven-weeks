@@ -1,4 +1,4 @@
-module MaybeHash where
+module MaybeHash (Hash, (-->), (-=>)) where
   import Test.QuickCheck
 
   data Hash a b = Hash [Pair a b]
