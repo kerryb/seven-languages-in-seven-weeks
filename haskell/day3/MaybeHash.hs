@@ -11,10 +11,10 @@ module MaybeHash (Hash, (-->), (-=>)) where
     show (Nested a b) = show a ++ " --> " ++ show b
 
   (-->) k v = Value k v
-  (-=>) k v = Nested k v
+  (-=>) k v = Nested k (Hash v)
 
   {-tests-}
 
-  hash = Hash ["foo" --> 1, "bar" --> 2, "baz" -=> Hash ["quz" --> 3, "quuz" --> 4]]
+  hash = Hash ["foo" --> 1, "bar" --> 2, "baz" -=> ["quz" --> 3, "quuz" --> 4]]
 
   prop_show = show hash == "[\"foo\" --> 1,\"bar\" --> 2,\"baz\" --> [\"quz\" --> 3,\"quuz\" --> 4]]"
