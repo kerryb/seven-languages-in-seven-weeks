@@ -1,4 +1,4 @@
-module MaybeHash (Hash, (-->), (-=>), fetch) where
+module MaybeHash (Hash, (-->), (-=>), fetch, fetch') where
   import Test.QuickCheck
 
   data Hash a b = Hash [Pair a b] deriving (Eq)
@@ -8,8 +8,9 @@ module MaybeHash (Hash, (-->), (-=>), fetch) where
   data Pair a b = Value a b | Nested a (Hash a b) deriving (Eq)
   instance (Show a, Show b) => Show (Pair a b) where
     show (Value a b) = show a ++ " --> " ++ show b
-    show (Nested a b) = show a ++ " --> " ++ show b
+    show (Nested a b) = show a ++ " -=> " ++ show b
 
+  -- Can't work out how to combine these two operators
   (-->) k v = Value k v
   (-=>) k v = Nested k (Hash v)
 
@@ -22,10 +23,26 @@ module MaybeHash (Hash, (-->), (-=>), fetch) where
     then Just $ Left v
     else fetch k (Hash t)
 
-  {-tests-}
+  -- Need to call this one for nested fetches, because the first fetch wraps the
+  -- returned sub-hash in a Left. Couldn't figure out how to make the same
+  -- function work for both.
+  fetch' k (Left h) = fetch k h
 
-  hash = Hash ["foo" --> 1, "bar" --> 2, "baz" -=> ["quz" --> 3, "quuz" --> 4]]
+  -- tests
 
-  prop_show = show hash == "[\"foo\" --> 1,\"bar\" --> 2,\"baz\" --> [\"quz\" --> 3,\"quuz\" --> 4]]"
-  prop_fetch_top_level = fetch "foo" hash == Just (Right 1)
+  hash = Hash ["foo" --> 1, "bar" --> 2, "baz" -=> ["quz" -=> ["quuz" --> 3]]]
+
+  prop_show = show hash ==
+    "[\"foo\" --> 1,\"bar\" --> 2,\"baz\" -=> [\"quz\" -=> [\"quuz\" --> 3]]]"
+
+  prop_fetch_top_level = fetch "foo" hash
+    == Just (Right 1)
+
+  prop_fetch_top_level_monad = (Just hash >>= fetch "foo" >>= return)
+    == Just (Right 1)
+
   prop_fetch_top_level_missing = fetch "wibble" hash == Nothing
+
+  prop_fetch_nested =
+    (Just hash >>= fetch "baz" >>= fetch' "quz" >>= fetch' "quuz" >>= return)
+    == Just (Right 3)
